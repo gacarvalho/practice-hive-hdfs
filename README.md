@@ -7,7 +7,7 @@ Esse repositório tem como objetivo demonstrar uma prática com o framework Hive
 
 📢  ETAPA 1: DESLOCANDO O ARQUIVO LOCAL PARA O HDFS
  
-Antes de ir manipular qualquer tipo de tabela vamos acessar e utilizar o beeline, que é um cliente Hive que está incluindo nos principais clusters. 
+Antes de manipular qualquer tipo de tabela vamos acessar e utilizar o beeline, que é um cliente Hive que está incluindo nos principais clusters. 
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/2.%20desafio_1.png?raw=true)
 
   > Questão: Enviar o arquivo local “/input/exercises-data/populacaoLA/populacaoLA.csv” para o diretório no HDFS “/user/aluno/<nome>/data/populacao”
@@ -39,7 +39,7 @@ E as propriedades:
 Agora vamos criar uma tabela interna utilizando o hive com uma consulta SQL ```create table empresastartup.pop(zip_code int, total_population inr, median_age float, total_males int, total_females int, total_households int, average_household_size float) row format delimited fields terminated by ',' lines terminated by '\n' stored as textfile tblproperties("skip.header.line.count"="1");```
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/4.%20desafio_1.png?raw=true)
 
-Agora podemos consultar essa tabela nas imagens abaixo, podendo observar a sua estrutura comos seus tipos de dados! Na segunda imagem aplicando o comando ```desc formatted empresastartup.pop;``` é possível observar o caminho que foi gravado.
+Agora podemos consultar essa tabela nas imagens abaixo, podendo observar a sua estrutura comos seus tipos de dados! Na segunda imagem aplicando o comando ```desc formatted empresastartup.pop;```, e é possível observar o caminho que foi gravado.
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/7.desafio_2.png?raw=true)
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/6.%20desafio_1.png?raw=true)
 
@@ -72,7 +72,7 @@ E agora vamos verificar se a base de dados e tabela está presente! Verificar se
 Quando trabalhamos com hive é possível criar dois tipos de tabelas: Tabelas Internas e Tabelas Externas. Quando trabalhamos com Tabelas Externas, o Hive não move os dados para seu diretório de armazém. Se a tabela externa for descartada, os metadados da tabela serão excluídos, mas não os dados. Agora, se trabalhamos com tabelas internas, o Hive move os dados para seu diretório de armazém. Se a tabela for eliminada, os metadados da tabela e os dados serão excluídos.Para criar a tabela externa nascimento foi necessario aplicar o seguinte comando ```create external table nascimento(nome string, sexo string, frequencia int) partitioned by (ano int) row format delimited fields terminared by ',' lines terminated by '\n' stored as textfile location '/user/aluno/gabriel/data/nascimento';```
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/13.desafio_3.png?raw=true)
 
-Após a criação de uma tabela externa, vamos adicionar a partição a tabela nascimento do ano de 2015. Na segunda imagem é possível observar que temos um arquivo para cada ano, por exemplo: yob1999. 
+Após a criação da tabela externa, vamos adicionar na partição a tabela nascimento do ano de 2015. Na segunda imagem é possível observar que temos um arquivo para cada ano, por exemplo: yob1999. 
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/14.desafio_3.png?raw=true)
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/15.desafio_3.png?raw=true)
 
@@ -83,7 +83,7 @@ Observando esse ponto vamos mover da nossa pasta para a nossa partição utiliza
 E agora vamos verificar se a nossa partição tem registros com a consulta ```select * from nascimento limit 20```
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/17.desafio_3.png?raw=true)
 
-Pronto. Agorape possível verificar as partições dentro do diretório nascimento com os anos 2015, 2016 e 2017.
+Pronto. Agora é possível verificar as partições dentro do diretório nascimento com os anos 2015, 2016 e 2017.
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/19.desafio_3.png?raw=true)
 
   > Questão: Selecionar os 5 primeiros registros da tabela nascimento pelo ano de 2016;
@@ -93,7 +93,7 @@ Utilizando a consulta ```select * from nascimento where ano=2015 limit 5``` é p
 
   > Questão: Contar a quantidade de nomes de crianças nascidas em 2017 e contar a quantidade de crianças nascidas em 2017
  
-Agora vamos contar a quantidade de nomes com a consulta ```select count(nome) as qtd from nascimento where ano=2017;``` e o sistema irá retornar a quantidade de nomes de crianças do ano de 2017! Vale lembrar que quando aplicamos consultas sobre uma base de dados ou partição o Hive aplicar um MapReduce. 
+Agora vamos contar a quantidade de nomes com a consulta ```select count(nome) as qtd from nascimento where ano=2017;``` e o sistema irá retornar a quantidade de nomes de crianças do ano de 2017! Vale lembrar que, quando aplicamos consultas sobre uma base de dados ou partição, o Hive realiza a consulta como um MapReduce. 
  
 Depois de saber a quantidade de nomes no ano de 2017 vamos contar a quantidade de crianças nascidas em 2017 com o comando ```select sum(frequencia) as qtd from nascimento where ano=2017;```
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/21.desafio_4.png?raw=true) 
@@ -107,12 +107,12 @@ Agora vamos mostrar por ordem de ano descrecente a quantidade de crianças nasci
 
   > Questão: Mostrar por ordem de ano decrescente a quantidade de crianças nascidas por sexo com o nome iniciado com ‘A’ e qual nome e quantidade das 5 crianças mais nascidas em 2016
   
-Para resolver a primeira questão vamos mostrar por ordem de ano decrecente a quantidade de crianças por sexo com o nome iniciado com 'A', e para isso vamos aplicar a seguinte consulta ```select ano, sexo, sum(frequencia) as qtd from nascimento where nome like 'A%' group by ano, sexo order by ano desc;``` e só assim o sistema irá retornar a quantidade de crianças com a letra 'A' nascidas de acordo com cada ano. 
+Para resolver a primeira questão vamos mostrar por ordem de ano decrecente, a quantidade de crianças por sexo com o nome iniciado com 'A'. Para isso vamos aplicar a seguinte consulta ```select ano, sexo, sum(frequencia) as qtd from nascimento where nome like 'A%' group by ano, sexo order by ano desc;``` e só assim o sistema irá retornar a quantidade de crianças com a letra 'A' nascidas de acordo com cada ano. 
   
-Na segunda questão vamos verificar qual o nome e quantidade das 5 crianças mais nascidas em 2016 com o comando ```select nome, max (frequencia) as qtd from nascimento where ano=2016 group by nome order by qtd desc limit 5;```
+Na segunda questão, vamos verificar qual o nome e quantidade das 5 crianças mais nascidas em 2016 com o comando ```select nome, max (frequencia) as qtd from nascimento where ano=2016 group by nome order by qtd desc limit 5;```
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/23.desafio_4.png?raw=true) 
 
   > Questão: Qual nome e quantidade das 5 crianças mais nascidas em 2016 do sexo masculino e feminino
 
-Agora para resolver a últimas questão queremos saber qual o nome e quantidade das 5 crianças mais nascidas em 2016 do sexo masculino e feminino, e para isso vamos utilizar a seguinte consulta ```select nome, max(frequencia) as qtd, sexo from nascimento where ano=2016 group by nome, sexo order by qtd desc limit 5;```
+Agora para resolver a última questão, queremos saber qual o nome e quantidade das 5 crianças mais nascidas em 2016 do sexo masculino e feminino, e para isso vamos utilizar a seguinte consulta ```select nome, max(frequencia) as qtd, sexo from nascimento where ano=2016 group by nome, sexo order by qtd desc limit 5;```
 ![Print terminal: Utilizando Hive com HDFS](https://github.com/gacarvalho/practice-hive-hdfs/blob/main/Image/24.desafio_4.png?raw=true) 
